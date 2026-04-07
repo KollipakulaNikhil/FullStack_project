@@ -1,63 +1,292 @@
-# Project Overview: ExamGuard
+# ExamGuard 🛡️
+### Real-Time Examination Integrity Monitoring System
 
-The `nikhil` folder contains a frontend React application built with **Vite**. Based on the codebase, the project is a **Real-Time Examination Integrity Monitor** named **ExamGuard**. It provides distinct interfaces for students to take secure exams and for proctors to monitor examination integrity.
-
-## Key Features
-
-1. **Role-Based Authentication**
-   - The application supports simulated login for two main roles: **Student** and **Proctor**.
-   - It validates demo credentials directly against a mock database and manages session states using React Context and `localStorage`.
-
-2. **Pre-Exam System Checks (Lobby)**
-   - Before launching an exam, students are routed to a "Lobby" page.
-   - The Lobby performs mandatory system requirement checks, validating **Camera Access**, **Microphone Access**, and enforcing **Fullscreen Mode**.
-   - It also outlines exam formats, rules, and durations.
-
-3. **Mock Backend Integration**
-   - The application relies on a comprehensive mock data layer (`data.js`) instead of a live API.
-   - It simulates a real database with students, complex coding/MCQ questions, real-time events (e.g., "right-click blocked", "tab switch"), and result calculations.
-
-4. **Modern UI/UX Elements**
-   - Utilizes `lucide-react` for iconography.
-   - Includes custom, reusable UI components like progress bars, status dots, badges, and avatars for a polished and responsive layout.
+A full-featured exam monitoring UI built with **React** and **plain CSS** — no UI libraries, no Tailwind. Designed with a dark mission-control aesthetic for both students taking exams and proctors monitoring them in real time.
 
 ---
 
-## Folder & Component Roles
+## 📸 Pages Overview
 
-### The `src/` Directory
-This directory holds the core application source code.
+| Page | Role | Description |
+|------|------|-------------|
+| Login | Both | Role-based login with animated background |
+| Lobby | Student | System checks, exam rules, countdown |
+| Exam | Student | MCQ, Code editor, File upload interface |
+| Result | Student | Score breakdown and integrity summary |
+| Proctor Dashboard | Proctor | Live student monitoring, event log, drawer |
 
-* **`src/assets/`**
-  * **Role**: Stores static files like images and SVG logos (e.g., `react.svg`, `hero.png`) that are imported directly into React components.
+---
 
-* **`src/components/`**
-  * **Role**: Contains reusable UI building blocks utilized across multiple pages to keep the code modular and DRY (Don't Repeat Yourself).
-  * **Key Files**: 
-    - `Header.jsx`: The top navigation bar showing the ExamGuard logo, the logged-in user's avatar, their role badge, and a Sign-Out button.
-    - `UI.jsx`: A collection of small, reusable UI elements like `Badge`, `StatusDot`, `Spinner`, `ProgressBar`, and `Avatar`.
+## 🚀 Getting Started
 
-* **`src/pages/`**
-  * **Role**: Contains the full-page React components that represent distinct views or routes in the application.
-  * **Key Files**:
-    - `LoginPage.jsx`: The initial entry point. Provides an animated, glassmorphism-styled login form where users toggle between Student or Proctor roles to authenticate.
-    - `LobbyPage.jsx`: The waiting room for students. It displays exam rules and strictly performs simulated hardware/system validation before allowing the student to begin.
+### Prerequisites
+- Node.js v18 or higher
+- npm
 
-* **`src/data.js`**
-  * **Role**: Acts as the localized mock database. It maps out users, exam questions (MCQs, coding challenges, document uploads), student behaviors/risks, real-time timeline events (like tab switching notifications), and final exam results.
+### Installation
 
-* **`src/AuthContext.jsx`**
-  * **Role**: The global state container for Application Authentication. It exposes the `useAuth()` hook, which allows any component in the application to access the current logged-in user, check loading states, perform logins, and handle logouts.
+```bash
+# Clone the repository
+git clone https://github.com/KollipakulaNikhil/FullStack_project.git
+cd FullStack_project
 
-* **`src/App.jsx` & `src/main.jsx`**
-  * **Role**: 
-    - `main.jsx` is the React mount point that binds the app to the `index.html` document.
-    - `App.jsx` acts as the root layout component and entry point.
+# Install dependencies
+npm install
 
-* **`src/index.css` & `src/App.css`**
-  * **Role**: Controls the global styling, CSS variables, utility classes, and layout rules for the whole application.
+# Start the development server
+npm run dev
+```
 
-### Configuration Files (Root Directory)
-* **`package.json`**: Lists the project's dependencies (such as `@monaco-editor/react` for code editing, `lucide-react` for icons, `react-router-dom` for navigation) and run scripts.
-* **`vite.config.js`**: Details settings for the Vite build system, handling fast refresh plugins and local dev server setup.
-* **`eslint.config.js`**: Contains the rules for linting the code to maintain formatting and syntax quality.
+The app will run at **http://localhost:5173**
+
+---
+
+## 🔑 Demo Credentials
+
+| Role | Email | Password |
+|------|-------|----------|
+| 🎓 Student | `student@exam.com` | `student123` |
+| 🛡️ Proctor | `proctor@exam.com` | `proctor123` |
+
+---
+
+## 📁 Project Structure
+
+```
+nikhil/
+├── public/
+│   └── favicon.svg
+├── src/
+│   ├── App.jsx                 # Main router + protected routes
+│   ├── AuthContext.jsx         # Login/logout + localStorage auth
+│   ├── data.js                 # All mock data (exam, students, events)
+│   ├── index.css               # Complete design system (plain CSS)
+│   ├── main.jsx                # React entry point
+│   │
+│   ├── components/
+│   │   ├── Header.jsx          # Shared top navigation bar
+│   │   └── UI.jsx              # Reusable: Badge, Avatar, ProgressBar, etc.
+│   │
+│   └── pages/
+│       ├── LoginPage.jsx       # Login with animated dot grid
+│       ├── LobbyPage.jsx       # Pre-exam lobby + system checks
+│       ├── ExamPage.jsx        # Full exam interface
+│       ├── ProctorPage.jsx     # Live monitoring dashboard
+│       └── ResultPage.jsx      # Post-exam results + integrity report
+│
+├── index.html
+├── vite.config.js
+└── package.json
+```
+
+---
+
+## ✨ Features
+
+### 🎓 Student Flow
+
+#### Login Page
+- Animated dot-grid background
+- Segmented role toggle (Student / Proctor)
+- Show/hide password toggle
+- Demo credentials panel
+- Form validation with error messages
+
+#### Exam Lobby
+- Live exam info (name, subject, duration, question count)
+- Exam rules checklist
+- System requirements check:
+  - ✅ Camera access
+  - ✅ Microphone access
+  - ✅ Fullscreen mode
+- Countdown animation (3 → 2 → 1 → GO)
+- Start button activates only when all checks pass
+
+#### Exam Interface
+- **Question Navigator sidebar** — grid of question numbers with color codes:
+  - Blue = answered
+  - Yellow = marked for review
+  - White border = current
+  - Gray = unattempted
+- **3 question types across tabs:**
+  - **MCQ** — click-to-select options with A/B/C/D labels
+  - **Code** — Monaco Editor with language selector and mock code runner
+  - **Upload** — drag & drop or browse file upload with file list
+- **Security monitoring:**
+  - Tab switch detection + counter
+  - Right-click blocked with toast notification
+  - F12 / Dev tools blocked
+- **Low time warning** — timer turns red and glows at 5 minutes
+- **Mark for Review** — bookmark any question
+- **Submit Modal** — shows answered vs. unanswered count before submitting
+
+#### Result Page
+- Score card with pass/fail badge
+- Section breakdown bars (MCQ / Code / Upload)
+- Integrity summary (tab switches, flags, risk score)
+- Activity log of violations
+- Duration and submission time
+
+---
+
+### 🛡️ Proctor Flow
+
+#### Proctor Dashboard
+- **Live stats bar:**
+  - Active students
+  - Flagged students
+  - Total tab switches
+  - Average risk score
+- **Exam progress bar** showing elapsed vs. total time
+- **Student card grid:**
+  - Risk score with colored risk bar
+  - Status badge (active / idle / flagged / submitted)
+  - Flagged cards glow red
+  - Tab switch count and progress
+- **Search** — filter students by name or email
+- **Event Log sidebar** — real-time event feed with severity filter (All / Critical / Warn / Info)
+
+#### Student Detail Drawer (slides in from right)
+- Risk score with quick stats (tabs, IP, progress)
+- **Timeline tab** — full activity log with colored severity tags
+- **Answers tab** — per-question answer review including:
+  - MCQ: selected answer with correct/wrong badge
+  - Code: Monaco editor in read-only mode
+  - Upload: file name with download button
+- **Uploads tab** — list of submitted files
+- **Actions:**
+  - Flag Student
+  - Terminate Session (with confirmation step)
+
+---
+
+## 🎨 Design System
+
+All styling is written in **plain CSS** inside `src/index.css`.
+
+### CSS Variables
+```css
+--bg-dark, --bg-card, --bg-elevated   /* background layers */
+--blue, --green, --red, --yellow       /* accent colors */
+--text-primary, --text-secondary, --text-muted
+--font-sans: 'Inter'
+--font-mono: 'JetBrains Mono'
+```
+
+### Reusable Components (UI.jsx)
+| Component | Description |
+|-----------|-------------|
+| `<Badge color="blue">` | Colored pill labels |
+| `<StatusDot color="green">` | Status indicator dot |
+| `<Avatar name="..." />` | Initials circle |
+| `<ProgressBar value max color>` | Animated progress bar |
+| `<Spinner />` | Loading spinner |
+| `<InfoRow label value />` | Label : Value row |
+
+### CSS Class Patterns
+```css
+.card          /* dark card with border */
+.glass-card    /* glassmorphism card (login) */
+.elevated      /* slightly raised surface */
+.btn           /* base button */
+.btn-primary   /* blue gradient button */
+.btn-ghost     /* transparent bordered button */
+.btn-danger    /* red button */
+.input         /* styled text input */
+.badge         /* colored pill */
+.segment       /* segmented control wrapper */
+.timer         /* exam countdown timer */
+.drop-zone     /* file drag & drop area */
+.student-card  /* proctor dashboard card */
+.drawer        /* sliding panel */
+.toast         /* notification banner */
+```
+
+### Animations
+| Name | Used For |
+|------|----------|
+| `fadeIn` | Page/card entrance |
+| `slideInRight` | Drawer opening |
+| `slideInDown` | Toast notifications |
+| `countPulse` | Exam countdown number |
+| `glowRed` | Low-time timer warning |
+| `dotDrift` | Login background dots |
+| `pulse` | Live status dot |
+| `spin` | Loading spinner |
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology | Purpose |
+|-----------|---------|
+| **React 19** | UI framework |
+| **React Router DOM v7** | Client-side routing |
+| **Monaco Editor** | Code editor in exam interface |
+| **Lucide React** | Icon library |
+| **Vite** | Build tool and dev server |
+| **Plain CSS** | All styling (no Tailwind, no UI libraries) |
+
+---
+
+## 📦 Dependencies
+
+```json
+{
+  "react": "^19.0.0",
+  "react-dom": "^19.0.0",
+  "react-router-dom": "^7.x",
+  "@monaco-editor/react": "^4.x",
+  "lucide-react": "^0.x"
+}
+```
+
+---
+
+## 📄 Pages & Routes
+
+| Route | Page | Access |
+|-------|------|--------|
+| `/login` | Login Page | Public |
+| `/lobby` | Exam Lobby | Student only |
+| `/exam` | Exam Interface | Student only |
+| `/result` | Result Page | Student only |
+| `/proctor` | Proctor Dashboard | Proctor only |
+
+Unauthorized access redirects to the correct page for the user's role.
+
+---
+
+## 🔐 Auth Flow
+
+1. User selects role (Student / Proctor) on the login page
+2. Credentials are checked against mock data in `data.js`
+3. On success, user object is stored in `localStorage`
+4. `AuthContext` provides `user`, `login()`, `logout()` to all components
+5. `ProtectedRoute` in `App.jsx` guards each route by role
+
+---
+
+## 📝 Mock Data
+
+All data lives in `src/data.js`:
+
+- **`USERS`** — student and proctor credentials
+- **`EXAM`** — exam info + 15 questions (8 MCQ, 3 Code, 2 Upload)
+- **`STUDENTS`** — 10 students with risk scores, tab counts, statuses
+- **`EVENTS`** — 12 mock events (CRITICAL / WARN / INFO)
+- **`TIMELINE`** — 10 activity timeline events for the drawer
+- **`RESULT`** — score, section breakdown, integrity summary
+
+---
+
+## 👨‍💻 Author
+
+**Nikhil Kollipakula**  
+GitHub: [@KollipakulaNikhil](https://github.com/KollipakulaNikhil)
+
+---
+
+## 📜 License
+
+This project is for educational purposes. Feel free to use and modify.
